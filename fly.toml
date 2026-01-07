@@ -1,29 +1,23 @@
-# Fly.io 配置檔 - 超級白銀哨兵
-# 背景監控程式（不需要 HTTP 服務）
+# fly.toml app configuration file generated for silvertracker-flyio on 2025-12-28T04:10:43Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "silvertracker-flyio"
-primary_region = "nrt"
+app = 'silvertracker-flyio'
+primary_region = 'nrt'
 
 [build]
-  # 使用 Dockerfile 建構
-  # Fly.io 會自動偵測並使用專案中的 Dockerfile
 
-[vm]
-  # 虛擬機配置
-  cpu_kind = "shared"
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 256
-
-# 移除 [http_service] - 背景任務不需要 HTTP 端口
-# 移除 [env] PORT - 背景任務不需要端口設定
-
-# 自動停止機器設定（省資源）
-[auto_stop_machines]
-  enabled = false  # 設為 false 以保持 24/7 運行
-
-[auto_start_machines]
-  enabled = true
-
-# 最少運行機器數
-[deploy]
-  strategy = "immediate"
+  memory_mb = 1024
